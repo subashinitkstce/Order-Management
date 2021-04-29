@@ -4,30 +4,46 @@ import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import javax.persistence.GenerationType;
+import org.springframework.lang.NonNull;
 @Entity
 @Table(name = "orders")
 public class Order {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
+	@NonNull
 	private String nric;
+	@NonNull
 	private String region;
+	@NonNull
 	private String country;
+	@NonNull
 	private String itemType;
+	@NonNull
 	private String salesChannel;
+	@NonNull
 	private String orderPriority;
+	@NonNull
 	private Date orderDate;
+	@NonNull
 	private long orderId;
+	@NonNull
 	private Date shipDate;
+	@NonNull
 	private int unitsSold;
+	@NonNull
 	private float unitPrice;
+	@NonNull
 	private float unitCost;
+	@NonNull
 	private double totalRevenue;
+	@NonNull
 	private double totalCost;
+	@NonNull
 	private double totalProfit;
 	
 	public Order() {

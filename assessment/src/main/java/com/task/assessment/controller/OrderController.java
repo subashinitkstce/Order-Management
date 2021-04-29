@@ -41,19 +41,14 @@ public class OrderController {
 
 	@GetMapping("/orders")
 	public Page<Order> getAllOrders(@PageableDefault(value = 100) Pageable page){
-	
 		return orderRepository.findAll(page);
 	}
-	/*public List<Order> getAllOrders(){
-		return orderRepository.findAll();
-	}*/
 
 	@PostMapping("/upload")
 	public List<Order> migrateOrders(HttpServletRequest request) throws IOException, ServletException{
 		final Part filePart = request.getPart("myFile");
 
 		List<Order> orders = readOrdersFromCSV(filePart);
-		//List<Order> orders = readOrdersFromCSV("D:\\Interview\\PaloIT\\newCSV.csv");
 		for (Order order : orders) { 
 			System.out.println(order);
 		}
@@ -86,50 +81,46 @@ public class OrderController {
 			line = scanner.nextLine();
 			String[] attributes = line.split(","); 
 			Order order = createOrder(attributes); 
-			orders.add(order);
+			if(order != null) {
+				orders.add(order);
+			}
 		} 
 		scanner.close();
 		return orders;
 
-
-		/*List<Order> orders = new ArrayList<>();
-		Path pathToFile = Paths.get(fileName);
-		try (BufferedReader br = Files.newBufferedReader(pathToFile, StandardCharsets.US_ASCII)) { 
-			br.readLine(); 
-			String line = br.readLine();
-			while (line != null) {
-				String[] attributes = line.split(","); 
-				Order order = createOrder(attributes); 
-				orders.add(order);
-				line = br.readLine(); 
-			} 
-		} catch (IOException ioe) {
-			ioe.printStackTrace(); 
-		} return orders; */
 	} 
 	private static Order createOrder(String[] metadata) {
+		System.out.println(metadata.length);
 		String nric = generateNRIC();
-		String region = metadata[0];
-		String country = metadata[1];
-		String itemType = metadata[2];
-		String salesChannel = metadata[3];
-		String orderPriority = metadata[4];
-		Date orderDate = new Date();
-		long orderId = Long.parseLong(metadata[6]);
-		Date shipDate = new Date();
-		int unitsSold = Integer.parseInt(metadata[8]);
-		float unitPrice = Float.parseFloat(metadata[9]);
-		float unitCost = Float.parseFloat(metadata[10]);
-		double totalRevenue = Double.parseDouble(metadata[11]);
-		double totalCost = Double.parseDouble(metadata[12]);
-		double totalProfit = Double.parseDouble(metadata[13]);
-		try {
-			orderDate = new SimpleDateFormat("mm/dd/yyyy").parse(metadata[5]);
-			shipDate = new SimpleDateFormat("mm/dd/yyyy").parse(metadata[7]);
-		}catch(Exception e) {}
-		return new Order(nric, region, country, itemType, salesChannel, orderPriority,
-				orderDate, orderId, shipDate, unitsSold, unitPrice, unitCost,
-				totalRevenue, totalCost, totalProfit); 
+		if(metadata.length>=14 && null!= nric && !"".equals(nric) && null!= metadata[0] && !"".equals(metadata[0])
+				&& null!= metadata[1] && !"".equals(metadata[1]) && null!= metadata[2] && !"".equals(metadata[2])
+				&& null!= metadata[3] && !"".equals(metadata[3]) && null!= metadata[4] && !"".equals(metadata[4])
+				&& null!= metadata[5] && !"".equals(metadata[5]) && null!= metadata[6] && !"".equals(metadata[6])
+				&& null!= metadata[7] && !"".equals(metadata[7]) && null!= metadata[8] && !"".equals(metadata[8])
+				&& null!= metadata[9] && !"".equals(metadata[9]) && null!= metadata[10] && !"".equals(metadata[10])
+				&& null!= metadata[11] && !"".equals(metadata[11]) && null!= metadata[12] && !"".equals(metadata[12])
+				&& null!= metadata[13] && !"".equals(metadata[13])) {
+			String region = metadata[0];
+			String country = metadata[1];
+			String itemType = metadata[2];
+			String salesChannel = metadata[3];
+			String orderPriority = metadata[4];
+			try {
+				Date orderDate = new SimpleDateFormat("mm/dd/yyyy").parse(metadata[5]);
+				Date shipDate = new SimpleDateFormat("mm/dd/yyyy").parse(metadata[7]);
+				long orderId = Long.parseLong(metadata[6]);
+				int unitsSold = Integer.parseInt(metadata[8]);
+				float unitPrice = Float.parseFloat(metadata[9]);
+				float unitCost = Float.parseFloat(metadata[10]);
+				double totalRevenue = Double.parseDouble(metadata[11]);
+				double totalCost = Double.parseDouble(metadata[12]);
+				double totalProfit = Double.parseDouble(metadata[13]);
+				return new Order(nric, region, country, itemType, salesChannel, orderPriority,
+						orderDate, orderId, shipDate, unitsSold, unitPrice, unitCost,
+						totalRevenue, totalCost, totalProfit); 
+			}catch(Exception e) {}
+		}
+		return null;
 	}
 	public static String generateNRIC() {
 		String firstChar ="STFG";
