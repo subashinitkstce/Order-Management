@@ -2,14 +2,14 @@
 
 This repo contains both front-end(**frontend**) and backend(**assessment**) project.
 
-## Cloning and Running the Application in local
-Backend setup
-  1. clone the main branch to local folder
+## Steps to run the Application
+### Backend setup
+  1. clone/download the repo to local system.
   2. Open Eclipse or IntelliJ IDE and open the project with 'Existing maven Projects' option
   3. Right click and 'Run As' 'Spring Boot App'
   4. Hit the url "http://localhost:8080/api/orders" to check the app is running.
 
-## Frontend setup
+### Frontend setup
   1. Clone the project into local
   2. Open Visual studio code and open the folder 'frontend'
   3. Install all the npm packages. Go into the project folder and type the following command to install all npm packages
